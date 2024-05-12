@@ -1,4 +1,5 @@
-# Ex07-Linux-File-IO-Systems-locking
+# Linux-File-IO-Systems-locking
+Ex07-Linux File-IO Systems-locking
 # AIM:
 To Write a C program that illustrates files copying and locking
 
@@ -17,30 +18,68 @@ Write the C Program using Linux IO Systems locking
 Execute the C Program for the desired output. 
 
 # PROGRAM:
-
+#### Developed by: SARON XAVIER A
+#### Register number: 212223230197
 ## 1.To Write a C program that illustrates files copying 
-```c
-include <sys/stat.h>
+```
+#include <unistd.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <stdlib.h>
-int main()
-{
-char block[1024];
-int in, out;
-int nread;
-in = open("filecopy.c", O_RDONLY);
-out = open("file.out", O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
-while((nread = read(in,block,sizeof(block))) > 0)
-write(out,block,nread);
-exit(0);}
+#include <stdio.h> // Include for debugging
+
+int main() {
+    char block[1024];
+    int in, out;
+    int nread;
+
+    // Open input file
+    in = open("filecopy.c", O_RDONLY);
+    if (in == -1) {
+        perror("Error opening input file");
+        exit(1);
+    }
+    printf("Input file opened successfully\n");
+
+    // Open or create output file
+    out = open("file.out", O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
+    if (out == -1) {
+        perror("Error opening/creating output file");
+        exit(1);
+    }
+    printf("Output file opened/created successfully\n");
+
+    // Read from input file and write to output file
+    while ((nread = read(in, block, sizeof(block))) > 0) {
+        printf("Read %d bytes from input file\n", nread);
+        if (write(out, block, nread) != nread) {
+            perror("Error writing to output file");
+            exit(1);
+        }
+        printf("Wrote %d bytes to output file\n", nread);
+    }
+
+    if (nread == -1) {
+        perror("Error reading from input file");
+        exit(1);
+    }
+
+    printf("End of input file\n");
+
+    // Close files
+    close(in);
+    close(out);
+
+    printf("Files closed successfully\n");
+
+    exit(0);
+}
 ```
-
-
-
-
+## OUTPUT
+![WhatsApp Image 2024-05-08 at 15 12 04_719fc690](https://github.com/PremkumarG3/Linux-File-IO-Systems-locking/assets/138955646/0e19f873-29a3-4e68-9065-41863d5719be)
 
 ## 2.To Write a C program that illustrates files locking
-```c
+```
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
@@ -80,18 +119,8 @@ return 0;
 }
 
 ```
-
-
-
-# OUTPUT
-## C program that illustrates files copying
-![image](https://github.com/samisrael/Linux-File-IO-Systems-locking/assets/118707037/9677c09d-1110-4a49-9ced-bc4238661f29)
-
-## C program that illustrates files locking
-![323158503-2de40eb8-7564-4cb7-a3d3-af3e5d1955d3](https://github.com/dharshan7200/Linux-File-IO-Systems-locking/assets/138850116/492447d9-9326-4be7-a4d2-4166740cc49c)
-
-
-
+## OUTPUT
+![WhatsApp Image 2024-05-08 at 15 12 04_60cf57ea](https://github.com/PremkumarG3/Linux-File-IO-Systems-locking/assets/138955646/3b4592ca-3fc5-4de9-96d8-85cd1d79f6b3)
 
 # RESULT:
 The programs are executed successfully.
